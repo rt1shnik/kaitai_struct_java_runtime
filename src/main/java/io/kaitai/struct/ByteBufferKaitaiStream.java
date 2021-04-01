@@ -24,13 +24,12 @@
 package io.kaitai.struct;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 
 /**
  * An implementation of {@link KaitaiStream} backed by a {@link ByteBuffer}.
@@ -48,7 +47,8 @@ public class ByteBufferKaitaiStream extends KaitaiStream {
      * @throws IOException if file can't be read
      */
     public ByteBufferKaitaiStream(String fileName) throws IOException {
-        fc = FileChannel.open(Paths.get(fileName), StandardOpenOption.READ);
+        FileInputStream fileInputStream = new FileInputStream(fileName);
+        fc = fileInputStream.getChannel();
         bb = fc.map(FileChannel.MapMode.READ_ONLY, 0, fc.size());
     }
 
